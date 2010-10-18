@@ -1,0 +1,297 @@
+############################################################################################
+### Rails Library Creep
+############################################################################################
+
+TODO: Rename to "Minimizing Library Dependencies"
+Using ~>: http://yehudakatz.com/2010/08/21/using-considered-harmful-or-whats-wrong-with
+
+http://semver.org/
+
+"In the world of software management there exists a dread place called "dependency hell." The bigger your system grows and the more packages you integrate into your software, the more likely you are to find yourself, one day, in this pit of despair."
+
+
+############################################################################################
+### TABLE OF CONTENTS
+############################################################################################
+
+* Library Creep
+
+TODO: Rename to minimizing library dependencies
+Russian dolls. Libraries that wrap other libraries (TinyMCE, Sunspot, etc.)
+60 libraries in one project!
+The magplus story - brought number of libraries down to 0, then upgraded to Rails 3
+The Ruby 1.9.2 test.
+The s3_swf_upload story. Forked first to get rid of aws-s3 dependency. Then ripped out only the one file needed from the library. Mostly a generator.
+Types of libraries - generators, etc.
+FasterCSV example - not needed in Ruby 1.9.2!
+Fundamental problem - conflicting dependencies
+Patches of Ruby classes in the standard library (example 32 bit Integer shift in s3_swf_upload gem)
+Uses global variables (s3_swf_upload, logworm_amqp)
+How many different XML, JSON, etc. parsers do you end up with?
+Review your libraries and understand them! Libraries cannot be treated as a black box. They are too tightly coupled with the rest of your system.
+
+Example: carrierwave
+peter@flygarn ~/service-plus]$ sudo gem install carrierwave
+Password:
+Successfully installed carrierwave-0.5.0
+1 gem installed
+Installing ri documentation for carrierwave-0.5.0...
+Installing RDoc documentation for carrierwave-0.5.0...
+peter@flygarn ~/service-plus]$ 
+peter@flygarn ~/service-plus]$ 
+peter@flygarn ~/service-plus]$ 
+peter@flygarn ~/service-plus]$ sudo gem install fog
+Building native extensions.  This could take a while...
+Successfully installed excon-0.2.4
+Successfully installed formatador-0.0.15
+Successfully installed net-ssh-2.0.23
+Successfully installed nokogiri-1.4.3.1
+Successfully installed fog-0.3.8
+
+Alternative to carrierwave:
+@brand.bucket.put("test-thumb.png", params[:thumb_image].open)
+
+MiniMagick is a light weight alternative to RMagick. Here is a light weight alternative to MiniMagick:
+identify mag-plus/popular-photo/thumb_com.bonnier.magplus.PPHiTune001D.PPH1110D.20101014-20.png
+mag-plus/popular-photo/thumb_com.bonnier.magplus.PPHiTune001D.PPH1110D.20101014-20.png PNG 80x80 80x80+0+0 8-bit DirectClass 13.5kb
+
+Start by learning the underlying technology rather than the wrapping technology, the fundamentals. Lives longer.
+
+Ruby developers over optimize for pretty DSLs. You can have pretty DSLs without libraries. Underrated: writing your own application DSL.
+
+Ruby developers are in the mindset of minimizing lines of code. For some reason they tend to only apply this to their own code, not to the code of the libraries they install.
+
+Advantage: you run the tests. You understand the code. You have less code because you only write code you need.
+
+Look at all the libs I'm not installing
+
+Pretty dsls overrated
+
+Why?
+
+
+############################################################################################
+### LIBRARY CREEP
+############################################################################################
+
+Rails Library Creep. A cousin of Feature Creep and Software Bloat. Ironic. Aren't we supposed to be lean?
+LOC
+
+Vendor Lockin
+
+############################################################################################
+### REFERENCES
+############################################################################################
+
+* "Feature creep":http://en.wikipedia.org/wiki/Feature_creep
+* "Software bloat":http://en.wikipedia.org/wiki/Software_bloat
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++ temporary notes below, unstructured ++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+*** Rails Library Dependencies (Det finns en röd tråd, jag lovar!)
+- I am going to be honest with you upfront: "I HATE RUBY ON RAILS PLUGIN AND GEM DEPENDENCIES!" PITA
+"warning: HTTParty depends on version 0.1.7 of crack, not 0.1.6"
+"can't activate , already activated gherkin-2.2.0"
+
+- A lot of Ruby on Rails libraries are driven for the desire for beautiful DSL wrappers. Examples: httparty, whenever.
+- The other type of library delivers gives you application level functionality (engines). Example: devise.
+- Third type is infrastructure/API level outside the scope of Rails. Most legitimate IMHO.
+
+Libraries with functionality that you don't really need, that are overkill. Example: capistrano-ext
+
+Example LOC from Newsdesk with library counts and LOC
+The httparty/clicky story
+Rational Version policy
+
+Managing complexity.
+
+We Ruby developers are supposed to be lean and simple. Less is more, right?
+
+- Intertwining, when everybody talks to everybody.
+
+academic earth!
+
+<!-- * "Promoting Code Quality":promoting-quality.html
+* "Measuring Code Quality":measuring-quality.html
+* "Rails Library Dependencies":library-dependencies.html -->
+
+
+Choose Your Dependencies Wisely
+
+Not very Rails-esque. Choices, choices, choices. This library or that library? Lack of conventions and consensus. Rapidly changing landscape. The rug being swept away under your feet.
+
+How do you decide if to use a library? How do you evaluate libraries? Like other code, since after all, libraries are code. How do you evaluate code?
+
+
+Software Health - chapter from my Newsdesk presentation
+
+Metrics
+
+Model layer independent of the framework (Rails)? Independent of the persistence layer? Why should your business logic depend on Rails? The fewer dependencies your code has, the longer it can live.
+
+Plugins that are intertwined with Rails. restful-authentication example. Code generation with controllers and views. authlogic, now devise.
+
+Libraries that are coupled and have a lot of dependencies don’t age well.
+
+A discussion of when to bring in libraries, and what to require from a library. Pros and cons.
+
+We are lured by the magic of the libraries and their pretty DSLs. and by short term productivity boosts.
+
+Version hell. Picking the right version of rails and the right version of the library.
+
+Prevent you from Ruby upgrades
+Rails upgrades
+Database upgrades.
+Search engine upgrades
+
+libraries can give you flying start, quick win
+
+Questions to ask about the library:
+
+- How well does it functionality map your needs? Does it do a lot of stuff that you don’t need? Is there some stuff you need to add or change?
+- Does it have good test coverage
+- Is it being maintained?
+- Is it mature and stable?
+- What does it depend on?
+- How big is the code base? Can you read the code and readily understand how it works?
+- What is the interface of the library?
+- How high is the cohesion of the library?
+- How high is the coupling of the library?
+- What are the code metrics of the library?
+
+Treating libraries as black boxes doesn’t really work so well in Rails land.
+
+A typical Rails library is developed quickly (over night) by a single Rails developer in his free time, then further developed and maintained for a couple of months, then mostly abandoned, sometimes forked if it’s popular. A typical library is highly coupled to Rails. The library landscape is messy.
+
+The Ruby web development landscape has gotten a lot more diversified over the last five years. There used to be only two popular books (AWR and the Pickaxe). Now there are hundreds. There used to be one Ruby interpreter, now there are several. There used to be only one major Rails version, now there are three. There used to be few alternatives to Rails, now there are many other popular frameworks. Everybody used to use RDBMS databases, now NoSQL databases are all the rage. A typical Rails system used to be a single simple app, now service oriented architectures with several apps are popular.
+
+application code does exactly what you need, no more no less
+you wrote it, so you probably understand it
+you have tests for it that you run frequently
+
+Which levels in the stack belong in a library and which belong in your application? The engine discussion.
+
+Using libraries give you a bunch of stuff you don’t need (your needs and the needs of the plugin author are seldom identical).
+
+Libraries Accumulate and Quickly Become a Liability Over Time
+Do you understand exactly what the library does and how it’s implemented?
+Can you maintain it?
+Is it tested?
+Does it work with future versions of Ruby and Rails?
+Which dependencies does it have?
+Does it patch Rails or Ruby in bad ways?
+Who wrote it?
+Sexy DSLs (httparty, sunspot are examples)
+How many lines of Ruby code is it?
+When was it last updated?
+What is the current version?
+How stable is it?
+Do you need to hack it or monkey patch it to do what you need?
+
+Example: rsolr an sunspot gems:
+Code LOC: 16672
+find vendor/gems/rsolr-0.12.1/lib -name '*.rb'|xargs wc -l # => 492
+find vendor/gems/sunspot-1.0.3/lib -name '*.rb'|xargs wc -l # => 6889
+find vendor/gems/sunspot_rails-1.0.3/lib -name '*.rb'|xargs wc -l # => 1237
+
+Example: httparty
+find vendor/gems/httparty-0.6.0/lib -name '*.rb'|xargs wc -l # => 903
+find vendor/gems/crack-0.1.7 -name '*.rb'|xargs wc -l # => 1073
+
+When you upgrade, beware of backwards incompatibilities. Rational versioning policy of RubyGems, not always followed: http://docs.rubygems.org/read/chapter/7
+
+major.minor.build - i.e. 1.2.4
+
+A category 1 change (implementation detail) will increment the build number.
+A category 2 change (backwards compatible) will increment the minor version number and reset the build number.
+A category 3 change (incompatible) will increment the major build number and reset the minor and build numbers.
+
+Example: httparty going from 0.4.3 to 0.6.0
+Commit message: “Rolling back httparty to version 0.4.3 for compatibility with Clicky API (don't ask)”
+Example: globalize2
+globalize2_hacked
+
+Maybe in practice only category 1 changes (build number) can be relied on to be backwards
+compatible??????
+
+35 plugins and 35 gems!
+
+Libraries tend to depend on other libraries and “drag these along” into your up. You tend to end up with several libraries that do the same thing (XML, JSON parsing etc.).
+
+Ideally you want to have one consistent way that you always do pagination, file uploads, state machines, JSON/XML/CSV parsing/generation, authentication etc. in your app.
+
+Wikipedia: “A liability can mean something that is a hindrance or puts an individual or group at a disadvantage”
+
+Multiple libraries that do the same thing
+Over focus on pretty dsls so blindly that we sacrifice simplicity and maintainability
+
+The ruby interpreter
+Rails
+The database
+The os?
+
+Can you install your app anywhere
+
+Staying lean and simple
+
+Isolationist testing
+
+Integration testing of APIs
+
+References:
+Newsdes Product Quality
+12 hours to rate: http://www.slideshare.net/ehuard/12-hours-to-rate-a-rails-application
+metric fu presentations
+
+Multiple libraries that do the same thing
+Over focus on pretty dsls so blindly that we sacrifice simplicity and maintainability
+
+The ruby interpreter
+Rails
+The database
+The os?
+
+Can you install your app anywhere
+
+Staying lean and simple
+
+like russian dolls
+code weight
+boom, sunspot, 7000 lines of code extra
+weighing you down, changing quickly, conflicting version changes,
+compatibility of versions, ruby upgrades, rails upgrades
+
+Quantity
+Libraries
+Moving parts
+Hacked libs
+
+Structure of files
+Lib dir
+Vendor
+Concerns
+
+Integration testing apis
+
+Making it harder to understand an application. Example: friendly_id. 1500 lines, with datamapper and sequel support, AR 2 and AR 3.
+Described as a swiss army knife. Great, now that's cohesion for you! The friendly_id library depends on the babosa gem which is 700 lines
+of Ruby that does the actual slugging. Now, IMHO, it's better to use the babosa gem directly.
+
+Making it more difficult for a new Rails developer to take over and maintain your application.
+
+############################################################################################
+### REFERENCES FOR CONSIDERATION
+############################################################################################
+
+* "Marcel Molina and Jamis Buck: Rails Code Review":http://mtnwestrubyconf2007.confreaks.com/session10.html
+* "Fred Brooks: The Mythical Man Month":http://en.wikipedia.org/wiki/The_Mythical_Man-Month
+* "Jason Fried, DHH: Rework":http://www.amazon.com/Rework-Jason-Fried/dp/0307463745
+* "Marty Andrews: Code Quality Analysis":http://en.oreilly.com/rails2009/public/schedule/detail/6752
+* "Jake Scruggs: Using Metric Fu to Make Your Rails Code Better (Railsconf 2009)":http://en.oreilly.com/rails2009/public/schedule/detail/7935
+* "Jake Scruggs: Metric Fu Presentation":http://www.channels.com/episodes/show/4013322/Using-metric-fu-to-Make-Your-Rails-Code-Better-Jake-Scruggs
+* "Ruby on Rails Code Quality Checklist":http://www.matthewpaulmoore.com/ruby-on-rails-code-quality-checklist
+* "Peter Marklund: Test Driven Development with Ruby":http://marklunds.com/test-driven-development-with-ruby.html
+
+The complexity cost of functionality is bigger than you think
