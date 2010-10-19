@@ -1,0 +1,85 @@
+h1. Minimizing Library Dependencies
+
+h1. Weighing In At
+
+<pre>
+Application LOC: 16008
+
+28 vendor/gems, LOC: 36000
+
+37 vendor/plugins, LOC: 28000
+
+vendor/rails, LOC: 96000
+</pre>
+
+h1. Library Smells
+
+* The library does too much (low cohesion) or too little
+* You need to patch the library to fit your application
+* A lot of gem dependencies
+* The gem dependencies duplicate or conflict with your current gems
+* High coupling through global variables, Rails or Ruby patches
+* Lack of test coverage
+* Not mature/stable. Unclear interface.
+* No active maintenance or community
+* Hard to read and understand. A lot of code.
+
+h1. Advantages to Rolling Your Own
+
+* You understand your own code and know how to maintain it
+* You run regression tests for your code when you make changes
+* The code does exactly what your app needs, no more, no less
+* You control the quality and style of the code
+* Ruby and Rails upgrades are easier
+
+h1. 1. Application Level Libraries (Engines)
+
+restful_authentication/device
+paperclip/carrierwave
+
+h1. 2. Libraries To Make Your App More DRY
+
+inherited_resource
+
+h1. 3. Wrapper Libraries (Ruby DSLs)
+
+mongoid
+right_aws
+rsolr - sunspot - sunspot-rails (russian dolls)
+whenever
+httparty
+TinyMCE
+
+h1. Specifying Versions
+
+<pre>
+	gem 'foobar', '>= 4.3.2' # probably not backwards compatible
+	gem 'foobar', '~> 4.3'   # should be backwards compatible
+	gem 'foobar', '~> 4.3.2' # most likely backwards compatible
+	gem 'foobar', '4.3.2'    # version lock
+</pre>
+
+h1. Version Lock/Promiscuity (Hell)
+
+"In systems with many dependencies, releasing new package versions can quickly become a nightmare. If the dependency specifications are too tight, you are in danger of version lock (the inability to upgrade a package without having to release new versions of every dependent package). If dependencies are specified too loosely, you will inevitably be bitten by version promiscuity (assuming compatibility with more future versions than is reasonable). Dependency hell is where you are when version lock and/or version promiscuity prevent you from easily and safely moving your project forward."
+
+h1. Look at all the libs I'm Not Depending On
+
+* carrierwave and fog
+* minimagick/rmagick
+* s3_swf_upload and aws/s3
+* httparty
+* restful_acl
+* whenever
+* restful_authentication
+* ssl_requirement
+* friendly_id - babosa
+
+h1. Libraries I Still Depend On
+
+* rails
+* delayed_job
+* right_aws (Github fork)
+* logworm_amqp
+
+h1. Resources
