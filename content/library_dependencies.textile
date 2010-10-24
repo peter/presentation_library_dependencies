@@ -17,8 +17,8 @@ h1. Library Smells
 * The library does too much (low cohesion) or too little
 * You need to patch the library to fit your application
 * A lot of gem dependencies
-* The gem dependencies duplicate or conflict with your current gems
-* High coupling through global variables, Rails or Ruby patches
+* The gem dependencies duplicate or conflict with your gems
+* Coupling through global variables, Rails or Ruby patches
 * Lack of test coverage
 * Not mature/stable. Unclear interface.
 * No active maintenance or community
@@ -32,23 +32,27 @@ h1. Advantages to Rolling Your Own
 * You control the quality and style of the code
 * Ruby and Rails upgrades are easier
 
-h1. 1. Application Level Libraries (Engines)
+h1. 1. Application Level Libraries
 
-restful_authentication/device
-paperclip/carrierwave
+* restful_authentication/device
+* paperclip/carrierwave
+* aasm/state_machine
+* acts-as-taggable-on
 
 h1. 2. Libraries To Make Your App More DRY
 
-inherited_resource
+* inherited_resource
+* simple_form/formtastic
+* show_for
 
 h1. 3. Wrapper Libraries (Ruby DSLs)
 
-mongoid
-right_aws
-rsolr - sunspot - sunspot-rails (russian dolls)
-whenever
-httparty
-TinyMCE
+* mongoid
+* right_aws
+* sunspot-rails (sunspot - rsolr)
+* whenever
+* httparty
+* tiny_mce
 
 h1. Specifying Versions
 
@@ -65,6 +69,7 @@ h1. Version Lock/Promiscuity (Hell)
 
 h1. Look at all the libs I'm Not Depending On
 
+<div style="font-size: 80%">
 * carrierwave and fog
 * minimagick/rmagick
 * s3_swf_upload and aws/s3
@@ -74,12 +79,20 @@ h1. Look at all the libs I'm Not Depending On
 * restful_authentication
 * ssl_requirement
 * friendly_id - babosa
+* FasterCSV (replaced in Ruby 1.9.2)
+* logworm_amqp (json, minion, amqp, bunny, eventmatchine, ruby-hmac, memcache-client, hpricot, oauth, heroku)	
+</div>
 
 h1. Libraries I Still Depend On
 
-* rails
+* rails (bundler, treetop, rake, thor, erubis, builder, tzinfo, i18n, mime-types etc.)
+* pg
 * delayed_job
 * right_aws (Github fork)
-* logworm_amqp
+* mongo (bson, bson_etx)
 
 h1. Resources
+
+* "Using &gt;= Considered Harmful (or, What's Wrong With &gt;=)":http://yehudakatz.com/2010/08/21/using-considered-harmful-or-whats-wrong-with
+* "Semantic Versioning":http://semver.org
+* "RubyGems Versioning Policies":http://docs.rubygems.org/read/chapter/7

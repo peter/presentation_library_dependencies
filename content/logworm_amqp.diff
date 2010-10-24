@@ -1,0 +1,50 @@
+1a2,14
+>   remote: git://github.com/peter/logworm_amqp.git
+>   revision: 268b779271c99fa2fd00e24e1c19c2ef69c85caf
+>   specs:
+>     logworm_amqp (0.9.6)
+>       heroku
+>       hpricot
+>       json (>= 1.4.3)
+>       memcache-client
+>       minion (>= 0.1.15)
+>       oauth
+>       ruby-hmac
+> 
+> GIT
+37a51,52
+>     amqp (0.6.7)
+>       eventmachine (>= 0.12.4)
+40a56,57
+>     bunny (0.6.0)
+>     configuration (1.1.0)
+47a65
+>     eventmachine (0.12.10)
+49a68,72
+>     heroku (1.10.14)
+>       json_pure (>= 1.2.0, < 1.5.0)
+>       launchy (~> 0.3.2)
+>       rest-client (>= 1.4.0, < 1.7.0)
+>     hpricot (0.8.2)
+50a74,78
+>     json (1.4.6)
+>     json_pure (1.4.6)
+>     launchy (0.3.7)
+>       configuration (>= 0.0.5)
+>       rake (>= 0.8.1)
+54a83
+>     memcache-client (1.8.5)
+55a85,88
+>     minion (0.1.15)
+>       amqp (>= 0.6.7)
+>       bunny (>= 0.6.0)
+>       json (>= 1.2.0)
+57a91
+>     oauth (0.4.3)
+78a113,114
+>     rest-client (1.6.1)
+>       mime-types (>= 1.16)
+91a128
+>     ruby-hmac (0.4.0)
+103a141
+>   logworm_amqp!

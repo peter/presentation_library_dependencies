@@ -10,10 +10,10 @@ These are my slides for a presentation held at the Rails Meetup in Stockholm on 
 ############################################################################################
 
 h1. Weighing In At
-Ruby developers are in the mindset of minimizing lines of code. For some reason they tend to only apply this to their own code, not to the code of the libraries they install.
+Ruby developers are in the mindset of minimizing lines of code. For some reason they tend to apply this to their application but not to libraries.
 Rails Library Creep. A cousin of Feature Creep and Software Bloat. Ironic. Aren't we supposed to be lean?
 We Ruby developers are supposed to be lean and simple. Less is more, right?
-Libraries Accumulate and Quickly Become a Liability Over Time
+Libraries Accumulate and can Become a Liability Over Time
 
 h1. Library Smells
 How do you decide if to use a library? How do you evaluate libraries? Like other code, since after all, libraries are code. How do you evaluate code?
@@ -45,12 +45,14 @@ I personally don't like having to look for application level stuff (controllers 
 Which levels in the stack belong in a library and which belong in your application? The engine discussion.
 
 h1. 2. Libraries To Make Your App More DRY
+Seems like a fairly legit category of libraries.
 
 h1. 3. Wrapper Libraries (Ruby DSLs)
 Ruby gems, especially Rails gems, tend to come and go like fashion.
 Learning the underlying API has more lasting value.
 Lack of conventions and consensus when it comes to libraries. Rapidly changing landscape. The rug being swept away under your feet.
 Start by learning the underlying technology rather than the wrapping technology, the fundamentals. Lives longer.
+Another advantage to using the underlying library is that you are in control of the version.
 Ruby developers over optimize for pretty DSLs. You can have pretty DSLs without libraries. Underrated: writing your own application DSL.
 
 h1. Specifying Version Dependency
@@ -59,6 +61,7 @@ A category 2 change (backwards compatible) will increment the minor version numb
 A category 3 change (incompatible) will increment the major build number and reset the minor and build numbers.
 Example: httparty going from 0.4.3 to 0.6.0
 Commit message: “Rolling back httparty to version 0.4.3 for compatibility with Clicky API (don't ask)”
+The approach Rails takes.
 
 h1. Look at all the libs I'm Not Installing
 The s3_swf_upload story. Forked first to get rid of aws-s3 dependency. Then ripped out only the one file needed from the library. Mostly a generator. Had Ruby patch example 32 bit Integer shift. Was not Ruby 1.9.2 compatible. Then replaced hundreds of lines
@@ -72,7 +75,8 @@ identify mag-plus/popular-photo/thumb_com.bonnier.magplus.PPHiTune001D.PPH1110D.
 => mag-plus/popular-photo/thumb_com.bonnier.magplus.PPHiTune001D.PPH1110D.20101014-20.png PNG 80x80 80x80+0+0 8-bit DirectClass 13.5kb
 rsolr (492 LOC) - sunspot (6889 LOC) - sunspot-rails (1237 LOC)
 httparty (903 LOC) - crack (1073 LOC)
-
+logworm_amqp is not Ruby 1.9.2 compatible. It made my Gemfile.lock grow from 108 146 lines! See content/logworm_amqp.diff.
+I started depending on JSON without realizing that dependency was only there because of logworm.
 
 ############################################################################################
 ### REFERENCES
@@ -84,24 +88,3 @@ httparty (903 LOC) - crack (1073 LOC)
 Using >= Considered Harmful (or, What’s Wrong With >=)":http://yehudakatz.com/2010/08/21/using-considered-harmful-or-whats-wrong-with
 * "Semantic Versioning":http://semver.org
 * "RubyGems Versioning Policies":http://docs.rubygems.org/read/chapter/7
-
-12 hours to rate: http://www.slideshare.net/ehuard/12-hours-to-rate-a-rails-application
-metric fu presentations
-
-Making it harder to understand an application. Example: friendly_id. 1500 lines, with datamapper and sequel support, AR 2 and AR 3.
-Described as a swiss army knife. Great, now that's cohesion for you! The friendly_id library depends on the babosa gem which is 700 lines
-of Ruby that does the actual slugging. Now, IMHO, it's better to use the babosa gem directly.
-
-
-############################################################################################
-### REFERENCES FOR CONSIDERATION
-############################################################################################
-
-* "Marcel Molina and Jamis Buck: Rails Code Review":http://mtnwestrubyconf2007.confreaks.com/session10.html
-* "Fred Brooks: The Mythical Man Month":http://en.wikipedia.org/wiki/The_Mythical_Man-Month
-* "Jason Fried, DHH: Rework":http://www.amazon.com/Rework-Jason-Fried/dp/0307463745
-* "Marty Andrews: Code Quality Analysis":http://en.oreilly.com/rails2009/public/schedule/detail/6752
-* "Jake Scruggs: Using Metric Fu to Make Your Rails Code Better (Railsconf 2009)":http://en.oreilly.com/rails2009/public/schedule/detail/7935
-* "Jake Scruggs: Metric Fu Presentation":http://www.channels.com/episodes/show/4013322/Using-metric-fu-to-Make-Your-Rails-Code-Better-Jake-Scruggs
-* "Ruby on Rails Code Quality Checklist":http://www.matthewpaulmoore.com/ruby-on-rails-code-quality-checklist
-* "Peter Marklund: Test Driven Development with Ruby":http://marklunds.com/test-driven-development-with-ruby.html
